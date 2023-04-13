@@ -133,7 +133,7 @@ void report(int h, std::vector<int> &sr)
 
 void mT(int id, std::vector<int> &sr, std::vector<bool> &isSRD)
 {
-    for (int h = 0; h < HS; h++)
+    for (int h = 0; h < H; h++)
     {
         for (int min = 0; min < MS; min++)
         {

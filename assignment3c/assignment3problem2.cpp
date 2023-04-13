@@ -8,11 +8,12 @@
 #include <thread>
 #include <random>
 
-#define THREAD_COUNT 8 // each thread will have ranges of 60 meaning 0-60 then 61- whatever and so on
-#define MINUTES 60
+#define TC 8 // each thread will have ranges of 60 meaning 0-60 then 61- whatever and so on
 
-#ifndef HOURS
-#define HOURS 24 // doing 1 day only
+#define MS 60 //this doesnt stand for milliseconds but minutes in this case
+
+#ifndef H
+#define H 24 // doing 1 day only
 #endif
 
 std::mutex mutex;
@@ -46,11 +47,11 @@ void biggestDiff(std::vector<int> &sR)
     int mD = INT_MIN;
 
     // this foor loop its to give us largest difference
-    for (int id = 0; id < THREAD_COUNT; id++)
+    for (int id = 0; id < TC; id++)
     {
-        int offset = id * MINUTES;
+        int offset = id * MS;
 
-        for (int i = offset; i < MINUTES - jump + 1; i++)
+        for (int i = offset; i < MS - jump + 1; i++)
         {
             int max = *std::max_element(sR.begin() + i, sR.begin() + i + jump); // sr will be for our readings from our sensor
             int min = *std::min_element(sR.begin() + i, sR.begin() + i + jump);
@@ -132,12 +133,12 @@ void report(int h, std::vector<int> &sr)
 
 void mT(int id, std::vector<int> &sr, std::vector<bool> &isSRD)
 {
-    for (int h = 0; h < HOURS; h++)
+    for (int h = 0; h < HS; h++)
     {
-        for (int min = 0; min < MINUTES; min++)
+        for (int min = 0; min < MS; min++)
         {
             isSRD[id] = false;
-            sr[min + (id * MINUTES)] = generateRandomNumber(-100, 70);
+            sr[min + (id * MS)] = generateRandomNumber(-100, 70);
             isSRD[id] = true;
             // while loop below will make it sleep to try to simulate real time
             while (!isR(id, isSRD))
@@ -157,11 +158,11 @@ void mT(int id, std::vector<int> &sr, std::vector<bool> &isSRD)
 
 int main()
 {
-    std::vector<int> sr(THREAD_COUNT * MINUTES);
-    std::vector<bool> isSRD(THREAD_COUNT);
-    std::thread threads[THREAD_COUNT] = {};
+    std::vector<int> sr(TC * MS);
+    std::vector<bool> isSRD(TC);
+    std::thread threads[TC] = {};
 
-    for (int i = 0; i < THREAD_COUNT; i++)
+    for (int i = 0; i < TC; i++)
     {
         threads[i] = std::thread(mT, i, std::ref(sr), std::ref(isSRD));
     }

@@ -64,7 +64,7 @@ void biggestDiff(std::vector<int> &sR)
             }
         }
     }
-    std::cout << "Biggest difference from" << start << " minutes to " << (start + 10) << " was " << mD << "F" << std::endl;
+    std::cout << "Biggest difference was from " << start << " minutes to " << (start + 10) << " was " << mD << "F" << std::endl;
 }
 
 void hT(std::vector<int> &sR)
